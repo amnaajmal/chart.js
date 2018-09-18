@@ -1,0 +1,25 @@
+body{
+
+	background-image: url("https://i1.wp.com/www.freeppt.net/background/black-currency-powerpoint-template.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+input{
+	margin-left: 250px;
+	margin-top: 5px;
+}
+button{
+	margin-right: 250px;
+	margin-top: 5px;
+}
+.inp{
+	width: 65% !important;
+}
+#bar-chart{
+	
+	margin-left: 249px;
+	height: 600px !important;
+}
+canvas{
+	color: black;
+}
