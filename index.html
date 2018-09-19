@@ -11,16 +11,17 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
-	<div class="input-group mb-3">
-		<input type="country" class="form-control country" placeholder="Country" aria-label="Recipient's username" aria-describedby="button-addon2">
-		<div class="input-group-append" onclick="getInfo()">
-			<button id="search-btn" class="btn btn-outline-secondary" type="button" id="button-addon2">
-			</button>
+<body onload="intialize()">
+	<div class="container">
+		<div class="input-group mb-3">
+			<input type="text" class="form-control country" placeholder="enter city name" aria-label="Recipient's username" aria-describedby="button-addon2">
+			<div class="input-group-append" onclick="getInfo()">
+				<button id="search-btn" class="btn btn-outline-secondary" type="button" id="button-addon2">Search
+				</button>
+			</div>
 		</div>
-	</div>
-	<div class="inp">
-		<canvas id="bar-chart" ></canvas></div>
-		<script src="script.js"></script>
-	</body>
-	</html>
+		<div class="inp">
+			<canvas id="bar-chart" ></canvas></div>
+			<script src="script.js"></script>
+		</body>
+		</html>
