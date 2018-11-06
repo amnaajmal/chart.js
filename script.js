@@ -1,75 +1,112 @@
-function intialize(){
-  $(".form-control").keyup(function(event){
-    if (event.keyCode === 13){
-      $("#search-btn").click();
-    }
-  })
-}
-function getInfo(){
-  const inp2 = document.querySelector(".country").value;
-  var list = [0,0,0,0,0,0];
-  var bar_ctx = document.getElementById('bar-chart').getContext('2d');
-  
-  var purple_orange_gradient = bar_ctx.createLinearGradient(0, 0, 0, 600);
-  purple_orange_gradient.addColorStop(0, 'grey');
-  purple_orange_gradient.addColorStop(1, 'black');
-  $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/forecast?q=${inp2}&appid=4b49b66c977879c9915a688302785b74&units=metric`,
-    success: function (data) {
-      for(var i = 0 ;i<data.list.length ;i++)
-      {
-        if(Math.round(data.list[i].main.temp_max)<15)
-        {
-          list[0]=list[0]+1;
-        }
-        if(Math.round(data.list[i].main.temp_max)>=16 && Math.round(data.list[i].main.temp_max)<=18)
-        {
-          list[1]=list[1]+1;
-        }
-        if(Math.round(data.list[i].main.temp_max)>=19 && Math.round(data.list[i].main.temp_max)<=21)
-        {
-          list[2]=list[2]+1;
-        }
-        if(Math.round(data.list[i].main.temp_max)>=22 && Math.round(data.list[i].main.temp_max)<=24)
-        {
-          list[3]=list[3]+1;
-        }
-        if(Math.round(data.list[i].main.temp_max)>=25 && Math.round(data.list[i].main.temp_max)<=27)
-        {
-          list[4]=list[4]+1;
-        }
-        if(Math.round(data.list[i].main.temp_max)>=28 )
-        {
-          list[5]=list[5]+1;
-        }
+var app = new Vue({
+  el: "#app",
+  data: {
+    chart: null,
+    city: "",
+    dates: [],
+    temps: [],
+    loading: false,
+    errored: false
+  },
+  methods: {
+    getData: function() {
+      this.loading = true;
+
+      if (this.chart != null) {
+        this.chart.destroy();
       }
-      var bar_chart = new Chart(bar_ctx, {
-        type: 'bar',
-        data: {
-          labels: ["less than 15","16 - 18","19 - 21","22 - 24","25 - 27","28 or Greater" ],
-          datasets: [{
-            label: 'Temperature',
-            data: list,
-            backgroundColor: purple_orange_gradient,
-            hoverBackgroundColor: purple_orange_gradient,
-            hoverBorderWidth: 2,
-            hoverBorderColor: 'black'
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-                // ticks: {
-                //   beginAtZero:true
-                // }
-              }]
+
+      axios
+      .get("https://api.openweathermap.org/data/2.5/forecast", {
+        params: {
+          q: this.city,
+          units: "imperial",
+          appid: "fd3150a661c1ddc90d3aefdec0400de4"
+        }
+      })
+      .then(response => {
+        this.dates = response.data.list.map(list => {
+          return list.dt_txt;
+        });
+
+        this.temps = response.data.list.map(list => {
+          return list.main.temp;
+        });
+
+        var ctx = document.getElementById("myChart");
+        this.chart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: this.dates,
+            datasets: [
+            {
+              label: "Avg. Temp",
+              backgroundColor: "grey",
+              borderColor: "rgb(54, 162, 235)",
+              fill: false,
+              data: this.temps
+            }
+            ]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "Temperature with Chart.js"
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  var label =
+                  data.datasets[tooltipItem.datasetIndex].label || "";
+
+                  if (label) {
+                    label += ": ";
+                  }
+
+                  label += Math.floor(tooltipItem.yLabel);
+                  return label + "°F";
+                }
+              }
+            },
+            scales: {
+              xAxes: [
+              {
+                type: "time",
+                time: {
+                  unit: "hour",
+                  displayFormats: {
+                    hour: "M/DD @ hA"
+                  },
+                  tooltipFormat: "MMM. DD @ hA"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: "Date/Time"
+                }
+              }
+              ],
+              yAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                  labelString: "Temperature (°F)"
+                },
+                ticks: {
+                  callback: function(value, index, values) {
+                    return value + "°F";
+                  }
+                }
+              }
+              ]
             }
           }
         });
-      console.log(data);
-    },
-    error: function (error) {
-      console.log(error);
+      })
+      .catch(error => {
+        console.log(error);
+        this.errored = true;
+      })
+      .finally(() => (this.loading = false));
     }
-  });
-}
+  }
+});
