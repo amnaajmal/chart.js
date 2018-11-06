@@ -1,18 +1,32 @@
 body{
-
-	background-image: url("https://www.hdwallback.net/wp-content/uploads/2017/12/white-backgrounds-hd-680x425.jpg");
+	background-image: url("http://i1.wp.com/getwallpapers.com/wallpaper/full/6/8/9/301862.jpg?resize=806%2C453");
 	background-size: cover;
 	background-repeat: no-repeat;
+}	
+#myChart{
+	height: 450px !important;
+	width: 100%;
+
 }
-.inp{
-	width: 65% !important;
+.fab {
+    float: right;
+    font-size: 50px;
+	color: gray;
+	background-color: white;
+    margin-right: 20px;
+    margin-top: 46px;
+    margin-bottom: 40px;
+    transition: transform .2s;
+    border-radius: 90px;
+    padding: 2px 5px 5px 5px;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-family: "Font Awesome 5 Brands";
 }
-#bar-chart{
-	
-	margin-left: 249px;
-	height: 600px !important;
-}
-.input-group{
-	margin: 1em auto;
-	max-width: 500px;
+a{
+    cursor: pointer;
 }
